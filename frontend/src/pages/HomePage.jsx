@@ -6,7 +6,7 @@ import {
   getUserFriends,
   sendFriendRequest,
 } from "../lib/api";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { CheckCircleIcon, MapPinIcon, UserPlusIcon, UsersIcon } from "lucide-react";
 
 import { capitialize } from "../lib/utils";
@@ -52,7 +52,8 @@ const HomePage = () => {
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="container mx-auto space-y-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Your Friends</h2>
+          {/* Using text-base-content for theme-aware contrast */}
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-base-content">Your Friends</h2>
           <Link to="/notifications" className="btn btn-outline btn-sm">
             <UsersIcon className="mr-2 size-4" />
             Friend Requests
@@ -77,9 +78,11 @@ const HomePage = () => {
           <div className="mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Meet New Learners</h2>
-                <p className="opacity-70">
-                  Discover perfect language exchange partners based on your profile
+                {/* Using text-base-content for theme-aware contrast */}
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-base-content">Discover New Friends</h2>
+                {/* Using text-base-content with opacity for theme-aware contrast */}
+                <p className="opacity-70 text-base-content">
+                  Find amazing new friends based on your profile
                 </p>
               </div>
             </div>
@@ -91,9 +94,11 @@ const HomePage = () => {
             </div>
           ) : recommendedUsers.length === 0 ? (
             <div className="card bg-base-200 p-6 text-center">
-              <h3 className="font-semibold text-lg mb-2">No recommendations available</h3>
+              {/* Using text-base-content for theme-aware contrast */}
+              <h3 className="font-semibold text-lg mb-2 text-base-content">No new friends to recommend</h3>
+              {/* Using text-base-content with opacity for theme-aware contrast */}
               <p className="text-base-content opacity-70">
-                Check back later for new language partners!
+                Come back soon to meet new friends!
               </p>
             </div>
           ) : (
@@ -113,9 +118,10 @@ const HomePage = () => {
                         </div>
 
                         <div>
-                          <h3 className="font-semibold text-lg">{user.fullName}</h3>
+                          {/* Using text-base-content for theme-aware contrast */}
+                          <h3 className="font-semibold text-lg text-base-content">{user.fullName}</h3>
                           {user.location && (
-                            <div className="flex items-center text-xs opacity-70 mt-1">
+                            <div className="flex items-center text-xs opacity-70 mt-1 text-base-content">
                               <MapPinIcon className="size-3 mr-1" />
                               {user.location}
                             </div>
@@ -123,7 +129,7 @@ const HomePage = () => {
                         </div>
                       </div>
 
-                      {/* Languages with flags */}
+                      {/* Languages with flags - badges handle their own text color */}
                       <div className="flex flex-wrap gap-1.5">
                         <span className="badge badge-secondary">
                           {getLanguageFlag(user.nativeLanguage)}
@@ -135,13 +141,13 @@ const HomePage = () => {
                         </span>
                       </div>
 
-                      {user.bio && <p className="text-sm opacity-70">{user.bio}</p>}
+                      {/* Using text-base-content with opacity for theme-aware contrast */}
+                      {user.bio && <p className="text-sm opacity-70 text-base-content">{user.bio}</p>}
 
                       {/* Action button */}
                       <button
-                        className={`btn w-full mt-2 ${
-                          hasRequestBeenSent ? "btn-disabled" : "btn-primary"
-                        } `}
+                        className={`btn w-full mt-2 ${hasRequestBeenSent ? "btn-disabled" : "btn-primary"
+                          } `}
                         onClick={() => sendRequestMutation(user._id)}
                         disabled={hasRequestBeenSent || isPending}
                       >
