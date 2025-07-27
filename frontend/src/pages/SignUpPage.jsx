@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import useSignup from "../hooks/useSignUp"; 
+import useSignup from "../hooks/useSignUp";
 
 const SignUpPage = () => {
   const [signupData, setSignupData] = useState({
@@ -50,9 +50,9 @@ const SignUpPage = () => {
               type="text"
               placeholder="Your Name"
               className="input input-bordered w-full"
-              value={signupData.name}
+              value={signupData.fullName}
               onChange={(e) =>
-                setSignupData({ ...signupData, name: e.target.value })
+                setSignupData({ ...signupData, fullName: e.target.value })
               }
               required
             />
