@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import useSignup from "../hooks/useSignUp";
+import useSignup from "../hooks/useSignUp"; // Corrected import path
 
 const SignUpPage = () => {
   const [signupData, setSignupData] = useState({
