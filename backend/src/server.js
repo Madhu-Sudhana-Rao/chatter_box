@@ -18,7 +18,7 @@ const __dirname = path.dirname(__filename);
 
 
 app.use(cors({
-  origin: "https://chatter-box-app-pwih.onrender.com",
+  origin: "https://chatter-box-a2gj.onrender.com",
   credentials: true,
 }));
 
