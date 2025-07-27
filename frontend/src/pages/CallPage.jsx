@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router";
 import useAuthUser from "../hooks/useAuthUser";
 import { useQuery } from "@tanstack/react-query";
 import { getStreamToken } from "../lib/api";
-
 import {
   StreamVideo,
   StreamVideoClient,
@@ -14,7 +13,6 @@ import {
   CallingState,
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
-
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import toast from "react-hot-toast";
 import PageLoader from "../components/PageLoader";
@@ -38,7 +36,7 @@ const CallPage = () => {
   });
 
   useEffect(() => {
-    let client; // for cleanup
+    let client;
 
     const initCall = async () => {
       if (!tokenData?.token || !authUser || !callId) return;
@@ -58,6 +56,7 @@ const CallPage = () => {
 
         const callInstance = client.call("default", callId);
         await callInstance.join({ create: true });
+        await callInstance.microphone.enable();
 
         setVideoClient(client);
         setCall(callInstance);
@@ -111,7 +110,7 @@ const CallContent = () => {
   return (
     <StreamTheme>
       <SpeakerLayout />
-      <CallControls />
+      <CallControls onLeave={() => navigate("/")} />
     </StreamTheme>
   );
 };
