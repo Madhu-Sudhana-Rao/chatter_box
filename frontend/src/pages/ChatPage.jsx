@@ -23,27 +23,26 @@ const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
 const ChatPage = () => {
   const { id: targetUserId } = useParams();
+  const { authUser } = useAuthUser();
 
   const [chatClient, setChatClient] = useState(null);
   const [channel, setChannel] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { authUser } = useAuthUser();
-
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
     queryFn: getStreamToken,
-    enabled: !!authUser, 
+    enabled: !!authUser,
   });
 
   useEffect(() => {
+    let client;
+
     const initChat = async () => {
       if (!tokenData?.token || !authUser) return;
 
       try {
-        console.log("Initializing stream chat client...");
-
-        const client = StreamChat.getInstance(STREAM_API_KEY);
+        client = StreamChat.getInstance(STREAM_API_KEY);
 
         await client.connectUser(
           {
@@ -54,7 +53,6 @@ const ChatPage = () => {
           tokenData.token
         );
 
-        //
         const channelId = [authUser._id, targetUserId].sort().join("-");
 
         const currChannel = client.channel("messaging", channelId, {
@@ -73,17 +71,21 @@ const ChatPage = () => {
       }
     };
 
-    initChat();
-  }, [tokenData, authUser, targetUserId]);
+    if (!chatClient && authUser && tokenData?.token) {
+      initChat();
+    }
+
+    return () => {
+      if (client) client.disconnectUser();
+    };
+  }, [authUser, tokenData?.token, targetUserId]);
 
   const handleVideoCall = () => {
     if (channel) {
       const callUrl = `${window.location.origin}/call/${channel.id}`;
-
       channel.sendMessage({
         text: `I've started a video call. Join me here: ${callUrl}`,
       });
-
       toast.success("Video call link sent successfully!");
     }
   };
@@ -108,4 +110,5 @@ const ChatPage = () => {
     </div>
   );
 };
+
 export default ChatPage;
