@@ -17,6 +17,7 @@ import "@stream-io/video-react-sdk/dist/css/styles.css";
 import toast from "react-hot-toast";
 import PageLoader from "../components/PageLoader";
 
+// ✅ Ensure your .env has VITE_STREAM_API_KEY=your_actual_key
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
 const CallPage = () => {
@@ -56,9 +57,6 @@ const CallPage = () => {
 
         const callInstance = client.call("default", callId);
         await callInstance.join({ create: true });
-
-        // Ensure subscription to audio/video tracks
-        await callInstance.subscribe();
 
         try {
           await callInstance.microphone.enable();
