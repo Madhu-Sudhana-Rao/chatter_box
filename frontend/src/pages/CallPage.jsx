@@ -56,7 +56,15 @@ const CallPage = () => {
 
         const callInstance = client.call("default", callId);
         await callInstance.join({ create: true });
-        await callInstance.microphone.enable();
+
+        // Ensure subscription to audio/video tracks
+        await callInstance.subscribe();
+
+        try {
+          await callInstance.microphone.enable();
+        } catch (err) {
+          toast.error("Microphone access denied.");
+        }
 
         setVideoClient(client);
         setCall(callInstance);
@@ -75,7 +83,7 @@ const CallPage = () => {
     return () => {
       if (client) client.disconnectUser?.();
     };
-  }, [authUser, tokenData?.token, callId]);
+  }, [authUser, tokenData?.token, callId, videoClient]);
 
   if (authLoading || isConnecting) return <PageLoader />;
 
