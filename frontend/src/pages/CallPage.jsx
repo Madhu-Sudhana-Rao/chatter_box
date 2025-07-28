@@ -106,20 +106,22 @@ const CallContent = () => {
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
 
+  const [hasJoined, setHasJoined] = useState(false);
+
   useEffect(() => {
-    
-    if (callingState && callingState === CallingState.LEFT) {
-      console.log("User left the call, navigating home...");
+    if (callingState === CallingState.JOINED) {
+      setHasJoined(true);
+    }
+
+    if (hasJoined && callingState === CallingState.LEFT) {
+      console.log("User left call. Redirecting to home...");
       navigate("/");
     }
-  }, [callingState, navigate]);
+  }, [callingState, hasJoined, navigate]);
 
-  
   if (!callingState || callingState === CallingState.IDLE) {
     return (
-      <div className="text-center text-gray-500 p-4">
-        Connecting to the call...
-      </div>
+      <div className="text-center text-gray-500 p-4">Connecting to the call...</div>
     );
   }
 
