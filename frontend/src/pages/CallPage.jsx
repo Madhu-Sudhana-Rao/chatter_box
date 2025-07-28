@@ -17,7 +17,6 @@ import "@stream-io/video-react-sdk/dist/css/styles.css";
 import toast from "react-hot-toast";
 import PageLoader from "../components/PageLoader";
 
-// ✅ Ensure your .env has VITE_STREAM_API_KEY=your_actual_key
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
 const CallPage = () => {
@@ -108,10 +107,21 @@ const CallContent = () => {
   const callingState = useCallCallingState();
 
   useEffect(() => {
-    if (callingState === CallingState.LEFT) {
+    
+    if (callingState && callingState === CallingState.LEFT) {
+      console.log("User left the call, navigating home...");
       navigate("/");
     }
   }, [callingState, navigate]);
+
+  
+  if (!callingState || callingState === CallingState.IDLE) {
+    return (
+      <div className="text-center text-gray-500 p-4">
+        Connecting to the call...
+      </div>
+    );
+  }
 
   return (
     <StreamTheme>
